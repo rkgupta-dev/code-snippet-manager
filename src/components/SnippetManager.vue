@@ -50,6 +50,22 @@
                 dense
                 outlined
               ></v-select>
+
+              <!-- Show message when no snippets match the filter or search -->
+              <v-row
+                v-if="filteredSnippets.length === 0"
+                align="center"
+                justify="center"
+              >
+                <v-icon color="grey" class="display-1"
+                  >mdi-alert-circle-outline</v-icon
+                >
+                <span class="ml-2 text-h6 font-weight-bold"
+                  >No Snippets Added Yet</span
+                >
+              </v-row>
+
+              <!-- Display filtered snippets -->
               <div
                 v-for="snippet in filteredSnippets"
                 :key="snippet.id"
@@ -89,13 +105,17 @@
           </v-card>
         </v-col>
       </v-row>
+
+      <!-- Snackbar Notifications -->
       <v-snackbar v-model="snackbar" :timeout="2000" color="success">
         Snippet copied to clipboard!
       </v-snackbar>
       <v-snackbar v-model="saveSnackbar" :timeout="2000" color="success">
-        Snippet save successfully!
+        Snippet saved successfully!
       </v-snackbar>
     </v-container>
+
+    <!-- Footer Section -->
     <v-container
       class="d-flex justify-center align-center"
       style="height: 100vh"
@@ -166,14 +186,27 @@ export default {
       return Prism.highlight(code, Prism.languages.javascript, "javascript");
     },
     copyToClipboard(code) {
-      navigator.clipboard.writeText(code).then(
-        () => {
-          this.snackbar = true; // Show the snackbar when successful
-        },
-        (err) => {
-          console.error("Failed to copy snippet: ", err);
-        }
-      );
+      if (navigator.clipboard) {
+        // Use Clipboard API for modern browsers
+        navigator.clipboard.writeText(code).then(
+          () => {
+            this.snackbar = true; // Show the snackbar on success
+          },
+          (err) => {
+            console.error("Failed to copy snippet: ", err);
+            this.snackbar = false; // Optionally hide snackbar if there was an error
+          }
+        );
+      } else {
+        // Fallback for browsers that do not support Clipboard API
+        const textArea = document.createElement("textarea");
+        textArea.value = code;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+        this.snackbar = true; // Show snackbar for success
+      }
     },
     deleteSnippet(id) {
       // Remove the snippet with the matching id
@@ -206,5 +239,8 @@ export default {
 pre {
   white-space: pre-wrap; /* Ensures code wraps within the card */
   word-wrap: break-word; /* Prevents long lines from breaking layout */
+}
+.ml-2 {
+  margin-left: 8px;
 }
 </style>
