@@ -59,7 +59,7 @@
                   elevation="4"
                   dark
                   @click="sheet = !sheet"
-                  >List of Snippet</v-btn
+                  >List of Snippets</v-btn
                 >
               </div>
               <!-- Bottom Sheet for snippets lists -->
