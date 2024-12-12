@@ -14,7 +14,7 @@
               ></v-text-field>
               <v-select
                 v-model="category"
-                :items="categories"
+                :items="languages"
                 label="Category"
                 outlined
                 dense
@@ -48,8 +48,8 @@
               <div class="d-flex">
                 <v-select
                   v-model="selectedCategory"
-                  :items="['All', ...categories]"
-                  label="Filter by Category"
+                  :items="['All', ...languages]"
+                  label="Filter by Language"
                   dense
                   outlined
                 ></v-select>
@@ -59,7 +59,7 @@
                   elevation="4"
                   dark
                   @click="sheet = !sheet"
-                  >List of Snippets</v-btn
+                  >My Snippets</v-btn
                 >
               </div>
               <!-- Bottom Sheet for snippets lists -->
@@ -89,7 +89,7 @@
                           <tr>
                             <th>Serial No.</th>
                             <th>Title</th>
-                            <th>Category</th>
+                            <th>Languages</th>
                             <th>Actions</th>
                           </tr>
                           <tbody>
@@ -127,8 +127,19 @@
                                   >
                                     <v-icon>mdi-content-copy</v-icon>
                                   </v-btn>
-                                  <!-- Delete Button -->
+
+                                  <!-- Share Button -->
                                   <v-btn
+                                    small
+                                    color="green"
+                                    outlined
+                                    @click="shareOnWhatsApp(snippet)"
+                                    classs
+                                  >
+                                    <v-icon>mdi-whatsapp</v-icon>
+                                  </v-btn>
+                                  <!-- Delete Button -->
+                                  <!-- <v-btn
                                     small
                                     color="red"
                                     outlined
@@ -136,7 +147,7 @@
                                     class="ml-4"
                                   >
                                     <v-icon>mdi-delete</v-icon>
-                                  </v-btn>
+                                  </v-btn> -->
                                 </td>
                               </tr>
                             </template>
@@ -176,16 +187,27 @@
                     class="d-flex justify-space-between align-center"
                   >
                     <span>{{ snippet.title }}</span>
-
-                    <!-- Delete Snippet Button on the right -->
-                    <v-btn
-                      small
-                      color="red"
-                      outlined
-                      @click="deleteSnippet(snippet.id)"
-                    >
-                      <v-icon>mdi-delete</v-icon>
-                    </v-btn>
+                    <div>
+                      <v-btn
+                        small
+                        color="green"
+                        outlined
+                        @click="shareOnWhatsApp(snippet)"
+                        classs
+                      >
+                        <v-icon>mdi-whatsapp</v-icon>
+                      </v-btn>
+                      <!-- Delete Snippet Button on the right -->
+                      <v-btn
+                        small
+                        color="red"
+                        outlined
+                        @click="deleteSnippet(snippet.id)"
+                        class="ml-2"
+                      >
+                        <v-icon>mdi-delete</v-icon>
+                      </v-btn>
+                    </div>
                   </v-card-title>
                   <v-card-subtitle>{{ snippet.category }}</v-card-subtitle>
                   <v-btn
@@ -247,7 +269,7 @@ export default {
       code: "",
       search: "",
       selectedCategory: "All",
-      categories: ["JavaScript", "Vue.js", "CSS", "HTML", "Python"],
+      languages: ["JavaScript", "Vue.js", "CSS", "HTML", "Python"],
       snippets: [],
       snackbar: false, // Control the visibility of the snackbar
       saveSnackbar: false,
@@ -323,6 +345,13 @@ export default {
       this.snippets = this.snippets.filter((snippet) => snippet.id !== id);
       // Update localStorage after deletion
       localStorage.setItem("snippets", JSON.stringify(this.snippets));
+    },
+    shareOnWhatsApp(snippet) {
+      const encodedMessage = encodeURIComponent(
+        `*Title:* ${snippet.title}\n*Language:* ${snippet.category}\n*Code Snippet:*\n${snippet.code}`
+      );
+      const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
+      window.open(whatsappUrl, "_blank");
     },
   },
   mounted() {
