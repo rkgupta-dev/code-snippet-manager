@@ -10,12 +10,14 @@
                 v-model="title"
                 label="Title"
                 outlined
+                dense
               ></v-text-field>
               <v-select
                 v-model="category"
                 :items="categories"
                 label="Category"
                 outlined
+                dense
               ></v-select>
               <v-textarea
                 v-model="code"
@@ -43,13 +45,91 @@
               ></v-text-field>
             </v-card-title>
             <v-card-text>
-              <v-select
-                v-model="selectedCategory"
-                :items="['All', ...categories]"
-                label="Filter by Category"
-                dense
-                outlined
-              ></v-select>
+              <div class="d-flex">
+                <v-select
+                  v-model="selectedCategory"
+                  :items="['All', ...categories]"
+                  label="Filter by Category"
+                  dense
+                  outlined
+                ></v-select>
+                <v-btn
+                  color="primary"
+                  class="ml-2"
+                  elevation="4"
+                  dark
+                  @click="sheet = !sheet"
+                  >List of Snippet</v-btn
+                >
+              </div>
+              <!-- Bottom Sheet for snippets lists -->
+              <div class="text-center">
+                <v-bottom-sheet v-model="sheet" inset>
+                  <v-sheet class="text-center" height="350px">
+                    <v-btn
+                      class="my-4"
+                      text
+                      color="red"
+                      @click="sheet = !sheet"
+                    >
+                      Close
+                      <v-icon right dark> mdi-close </v-icon>
+                    </v-btn>
+                    <div
+                      style="
+                        max-height: 300px;
+                        overflow-y: auto;
+                        display: block;
+                        width: 100%;
+                        height: 100%;
+                      "
+                    >
+                      <v-simple-table class="my-4">
+                        <template v-slot:default>
+                          <tr>
+                            <th>Serial No.</th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Actions</th>
+                          </tr>
+                          <tbody>
+                            <tr
+                              v-for="(snippet, index) in filteredSnippets"
+                              :key="snippet.id"
+                              class="md-4"
+                            >
+                              <td>{{ index + 1 }}</td>
+                              <!-- Serial number -->
+                              <td>{{ snippet.title }}</td>
+                              <td>{{ snippet.category }}</td>
+                              <td>
+                                <!-- Copy Button -->
+                                <v-btn
+                                  small
+                                  icon
+                                  @click="copyToClipboard(snippet.code)"
+                                >
+                                  <v-icon>mdi-content-copy</v-icon>
+                                </v-btn>
+                                <!-- Delete Button -->
+                                <v-btn
+                                  small
+                                  color="red"
+                                  outlined
+                                  @click="deleteSnippet(snippet.id)"
+                                  class="ml-4"
+                                >
+                                  <v-icon>mdi-delete</v-icon>
+                                </v-btn>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </template>
+                      </v-simple-table>
+                    </div>
+                  </v-sheet>
+                </v-bottom-sheet>
+              </div>
 
               <!-- Show message when no snippets match the filter or search -->
               <v-row
@@ -71,7 +151,7 @@
                 :key="snippet.id"
                 class="snippet"
               >
-                <v-card class="mb-4">
+                <v-card class="my-4" outlined>
                   <v-card-title
                     class="d-flex justify-space-between align-center"
                   >
@@ -96,8 +176,13 @@
                   >
                     <v-icon>mdi-content-copy</v-icon>
                   </v-btn>
-                  <v-card-text class="scrollable-card">
-                    <pre v-html="highlightedCode(snippet.code)"></pre>
+                  <v-card-text class="scrollable-card my-2 prism-code">
+                    <div :class="prismThemeClass">
+                      <pre
+                        class="prism-code"
+                        v-html="highlightedCode(snippet.code)"
+                      ></pre>
+                    </div>
                   </v-card-text>
                 </v-card>
               </div>
@@ -131,11 +216,12 @@
 
 <script>
 import Prism from "prismjs";
-import "prismjs/themes/prism.css"; // Import the Prism.js theme
-
+import "prismjs/themes/prism.css"; // Light theme
+import "prismjs/themes/prism-okaidia.css"; // Dark theme
 export default {
   data() {
     return {
+      sheet: false,
       title: "",
       category: "",
       code: "",
@@ -148,6 +234,10 @@ export default {
     };
   },
   computed: {
+    prismThemeClass() {
+      // Determine the theme class based on Vuetify's dark mode
+      return this.$vuetify.theme.dark ? "prism-dark" : "prism-light";
+    },
     filteredSnippets() {
       return this.snippets.filter((snippet) => {
         const matchesSearch = snippet.title
@@ -242,5 +332,23 @@ pre {
 }
 .ml-2 {
   margin-left: 8px;
+}
+.prism-light .prism-code {
+  background: #f5f5f5;
+  color: #333;
+}
+
+/* Dark Theme */
+.prism-dark .prism-code {
+  background: #2d2d2d;
+  color: #f8f8f2;
+}
+
+/* Common Styles */
+.prism-code {
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-family: "Courier New", Courier, monospace;
 }
 </style>
