@@ -1,6 +1,20 @@
 <template>
   <div>
     <v-container>
+    <v-row class="text-center">
+      <v-col cols="12" sm="8" md="12">
+        <div class="pa-4">
+          <h2 class="headline text-center">
+            Organize and Share Your Code Snippets with Ease
+          </h2>
+          <h4 class="text-center">
+            Quickly save, search, copy, and share your code snippets with our easy-to-use platform.
+          </h4>
+        </div>
+      </v-col>
+    </v-row>
+  </v-container>
+    <v-container>
       <v-row class="my-2">
         <v-col cols="12" md="4">
           <v-card>
