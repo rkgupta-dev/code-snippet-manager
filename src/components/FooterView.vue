@@ -1,5 +1,5 @@
 <template>
-  <v-footer  padless class="grey darken-4 white--text mt-6">
+  <v-footer padless class="grey darken-4 white--text mt-6">
     <v-container>
       <v-row>
         <v-col cols="12" sm="4">
@@ -20,13 +20,28 @@
         </v-col>
         <v-col cols="12" sm="4">
           <h3>Stay Connected</h3>
-          <v-btn icon color="blue darken-2">
+          <v-btn
+            icon
+            color="blue darken-2"
+            href="https://twitter.com"
+            target="_blank"
+          >
             <v-icon>mdi-twitter</v-icon>
           </v-btn>
-          <v-btn icon color="grey darken-1">
+          <v-btn
+            icon
+            color="grey darken-1"
+            href="https://github.com/rkgupta-dev"
+            target="_blank"
+          >
             <v-icon>mdi-github</v-icon>
           </v-btn>
-          <v-btn icon color="blue darken-3">
+          <v-btn
+            icon
+            color="blue darken-3"
+            href="https://www.linkedin.com/in/rohit-kr-gupta-921760208/"
+            target="_blank"
+          >
             <v-icon>mdi-linkedin</v-icon>
           </v-btn>
           <v-btn icon color="red darken-2">
