@@ -2,13 +2,15 @@
   <v-app>
     <v-app-bar app color="light">
       <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          :src="require('@/assets/logo.png')"
-          width="30"
-        />
+        <router-link to="/">
+          <v-img
+            alt="Vuetify Logo"
+            class="shrink mr-2"
+            contain
+            :src="require('@/assets/logo.png')"
+            width="30"
+          />
+        </router-link>
         <h3>QuickSnip</h3>
       </div>
 

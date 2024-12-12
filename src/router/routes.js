@@ -4,6 +4,7 @@ import VueRouter from "vue-router";
 // Import your components
 import HowWorks from "@/components/HowWorks.vue";
 import SnippetManager from "@/components/SnippetManager.vue";
+import PageNotFound from "@/components/PageNotFound.vue";
 
 Vue.use(VueRouter);
 
@@ -19,6 +20,11 @@ const routes = [
     component: HowWorks,
   },
   // Add other routes here
+  {
+    path: "*", // Catch-all route
+    name: "PageNotFound",
+    component: PageNotFound,
+  },
 ];
 
 const router = new VueRouter({
