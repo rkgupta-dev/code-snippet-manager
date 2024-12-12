@@ -116,7 +116,7 @@
     </v-container>
 
     <!-- Footer Section -->
-    <v-container
+    <!-- <v-container
       class="d-flex justify-center align-center"
       style="height: 100vh"
     >
@@ -125,7 +125,7 @@
           <span>Snippet Manager - Created by rkgupta-dev</span>
         </v-col>
       </v-row>
-    </v-container>
+    </v-container> -->
   </div>
 </template>
 

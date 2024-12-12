@@ -29,11 +29,13 @@
       <!-- <HelloWorld/> -->
       <SnippetManager />
     </v-main>
+    <FooterView />
   </v-app>
 </template>
 
 <script>
 // import HelloWorld from './components/HelloWorld';
+import FooterView from "./components/FooterView.vue";
 import SnippetManager from "./components/SnippetManager.vue";
 
 export default {
@@ -42,6 +44,7 @@ export default {
   components: {
     // HelloWorld,
     SnippetManager,
+    FooterView,
   },
 
   data: () => ({
