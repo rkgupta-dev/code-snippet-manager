@@ -1,5 +1,5 @@
 <template>
-  <v-footer color="" padless class="grey darken-4 white--text">
+  <v-footer  padless class="grey darken-4 white--text mt-6">
     <v-container>
       <v-row>
         <v-col cols="12" sm="4">
@@ -12,7 +12,7 @@
         <v-col cols="12" sm="4">
           <h3>Quick Links</h3>
           <ul>
-            <li><a href="#">About Us</a></li>
+            <li><router-link to="/how-it-works">How It Works</router-link></li>
             <li><a href="#">Contact Us</a></li>
             <li><a href="#">Privacy Policy</a></li>
             <li><a href="#">Terms of Service</a></li>

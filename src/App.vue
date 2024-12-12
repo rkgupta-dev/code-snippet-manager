@@ -23,8 +23,7 @@
     </v-app-bar>
 
     <v-main>
-      <!-- SnippetManager component -->
-      <SnippetManager />
+      <router-view></router-view>
     </v-main>
     <FooterView />
   </v-app>
@@ -32,12 +31,10 @@
 
 <script>
 import FooterView from "./components/FooterView.vue";
-import SnippetManager from "./components/SnippetManager.vue";
 
 export default {
   name: "App",
   components: {
-    SnippetManager,
     FooterView,
   },
   data() {
