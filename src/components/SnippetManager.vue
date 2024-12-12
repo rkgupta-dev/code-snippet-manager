@@ -93,36 +93,53 @@
                             <th>Actions</th>
                           </tr>
                           <tbody>
-                            <tr
-                              v-for="(snippet, index) in filteredSnippets"
-                              :key="snippet.id"
-                              class="md-4"
-                            >
-                              <td>{{ index + 1 }}</td>
-                              <!-- Serial number -->
-                              <td>{{ snippet.title }}</td>
-                              <td>{{ snippet.category }}</td>
-                              <td>
-                                <!-- Copy Button -->
-                                <v-btn
-                                  small
-                                  icon
-                                  @click="copyToClipboard(snippet.code)"
-                                >
-                                  <v-icon>mdi-content-copy</v-icon>
-                                </v-btn>
-                                <!-- Delete Button -->
-                                <v-btn
-                                  small
-                                  color="red"
-                                  outlined
-                                  @click="deleteSnippet(snippet.id)"
-                                  class="ml-4"
-                                >
-                                  <v-icon>mdi-delete</v-icon>
-                                </v-btn>
-                              </td>
-                            </tr>
+                            <!-- Check if there are no snippets -->
+                            <template v-if="filteredSnippets.length === 0">
+                              <tr>
+                                <td colspan="4" class="text-center py-4">
+                                  <v-icon color="red" class="display-3"
+                                    >mdi-alert-circle-outline</v-icon
+                                  ><br />
+                                  <span class="ml-2 text-h6 font-weight-bold"
+                                    >No Snippets Added Yet</span
+                                  >
+                                </td>
+                              </tr>
+                            </template>
+
+                            <!-- Render snippets if available -->
+                            <template v-else>
+                              <tr
+                                v-for="(snippet, index) in filteredSnippets"
+                                :key="snippet.id"
+                                class="md-4"
+                              >
+                                <td>{{ index + 1 }}</td>
+                                <!-- Serial number -->
+                                <td>{{ snippet.title }}</td>
+                                <td>{{ snippet.category }}</td>
+                                <td>
+                                  <!-- Copy Button -->
+                                  <v-btn
+                                    small
+                                    icon
+                                    @click="copyToClipboard(snippet.code)"
+                                  >
+                                    <v-icon>mdi-content-copy</v-icon>
+                                  </v-btn>
+                                  <!-- Delete Button -->
+                                  <v-btn
+                                    small
+                                    color="red"
+                                    outlined
+                                    @click="deleteSnippet(snippet.id)"
+                                    class="ml-4"
+                                  >
+                                    <v-icon>mdi-delete</v-icon>
+                                  </v-btn>
+                                </td>
+                              </tr>
+                            </template>
                           </tbody>
                         </template>
                       </v-simple-table>
@@ -132,18 +149,21 @@
               </div>
 
               <!-- Show message when no snippets match the filter or search -->
-              <v-row
+              <div
                 v-if="filteredSnippets.length === 0"
                 align="center"
                 justify="center"
               >
-                <v-icon color="grey" class="display-1"
-                  >mdi-alert-circle-outline</v-icon
-                >
-                <span class="ml-2 text-h6 font-weight-bold"
-                  >No Snippets Added Yet</span
-                >
-              </v-row>
+                <v-divider></v-divider>
+                <div class="mt-4">
+                  <v-icon color="red" class="display-1"
+                    >mdi-alert-circle-outline</v-icon
+                  >
+                  <span class="ml-2 text-h6 font-weight-bold"
+                    >No Snippets Added Yet</span
+                  >
+                </div>
+              </div>
 
               <!-- Display filtered snippets -->
               <div
