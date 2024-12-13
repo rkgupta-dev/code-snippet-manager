@@ -17,7 +17,9 @@
             <li>
               <router-link to="/privacy-policy">Privacy Policy</router-link>
             </li>
-            <li><router-link to="/term-of-service">Terms of Service</router-link></li>
+            <li>
+              <router-link to="/term-of-service">Terms of Service</router-link>
+            </li>
           </ul>
         </v-col>
         <v-col cols="12" sm="4">
@@ -59,7 +61,7 @@
 
       <v-card-text class="text-center">
         © {{ new Date().getFullYear() }} —
-        <strong>QuickSnip. All Rights Reserved.</strong>
+        <strong>QuickSnip. Made by Rohit ❤️</strong>
       </v-card-text>
     </v-container>
   </v-footer>
