@@ -262,18 +262,6 @@
         Snippet saved successfully!
       </v-snackbar>
     </v-container>
-
-    <!-- Footer Section -->
-    <!-- <v-container
-      class="d-flex justify-center align-center"
-      style="height: 100vh"
-    >
-      <v-row class="fill-height" align="center" justify="center">
-        <v-col class="text-center">
-          <span>Snippet Manager - Created by rkgupta-dev</span>
-        </v-col>
-      </v-row>
-    </v-container> -->
   </div>
 </template>
 
@@ -430,6 +418,5 @@ pre {
   position: absolute;
   top: 10px;
   right: 10px;
-  z-index: 10;
 }
 </style>
