@@ -15,6 +15,10 @@
       </div>
 
       <v-spacer></v-spacer>
+      <!-- How it work Icon -->
+      <v-btn icon to="/how-it-works">
+        <v-icon>mdi-information-variant-box-outline</v-icon>
+      </v-btn>
 
       <!-- Dark Mode Toggle Icon -->
       <v-btn icon @click="toggleDarkMode">
