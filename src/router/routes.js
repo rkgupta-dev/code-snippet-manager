@@ -5,6 +5,9 @@ import VueRouter from "vue-router";
 import HowWorks from "@/components/HowWorks.vue";
 import SnippetManager from "@/components/SnippetManager.vue";
 import PageNotFound from "@/components/PageNotFound.vue";
+import PrivacyPolicyPage from "@/components/PrivacyPolicyPage.vue";
+import TermOfServicePage from "@/components/TermOfServicePage.vue";
+import ContactUsPage from "@/components/ContactUsPage.vue";
 
 Vue.use(VueRouter);
 
@@ -18,6 +21,21 @@ const routes = [
     path: "/how-it-works",
     name: "HowItWorks",
     component: HowWorks,
+  },
+  {
+    path: "/privacy-policy",
+    name: "PrivacyPolicyPage",
+    component: PrivacyPolicyPage,
+  },
+  {
+    path: "/term-of-service",
+    name: "TermsOfServicePage",
+    component: TermOfServicePage,
+  },
+  {
+    path: "/contact-us",
+    name: "TContactUsPage",
+    component: ContactUsPage,
   },
   // Add other routes here
   {

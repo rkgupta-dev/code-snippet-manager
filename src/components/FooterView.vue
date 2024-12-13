@@ -13,9 +13,11 @@
           <h3>Quick Links</h3>
           <ul>
             <li><router-link to="/how-it-works">How It Works</router-link></li>
-            <li><a href="#">Contact Us</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms of Service</a></li>
+            <li><router-link to="/contact-us">Contact Us</router-link></li>
+            <li>
+              <router-link to="/privacy-policy">Privacy Policy</router-link>
+            </li>
+            <li><router-link to="/term-of-service">Terms of Service</router-link></li>
           </ul>
         </v-col>
         <v-col cols="12" sm="4">
