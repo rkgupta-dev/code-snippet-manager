@@ -1,21 +1,28 @@
 <template>
   <div>
     <v-container>
-    <v-row class="text-center">
-      <v-col cols="12" sm="8" md="12">
-        <div class="pa-4">
-          <h2 class="headline text-center">
-            Organize and Share Your Code Snippets with Ease
-          </h2>
-          <h4 class="text-center">
-            Quickly save, search, copy, and share your code snippets with our easy-to-use platform.
-          </h4>
-        </div>
-      </v-col>
-    </v-row>
-  </v-container>
+      <!-- Render the section only if isVisible is true -->
+      <v-row v-if="isVisible" class="text-center position-relative">
+        <v-col cols="12">
+          <!-- Close button in the top-right corner -->
+          <v-btn icon color="red" class="close-button" @click="closeSection">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <!-- Section content -->
+          <div class="pa-4">
+            <h2 class="headline text-center">
+              Organize and Share Your Code Snippets with Ease
+            </h2>
+            <h4 class="text-center">
+              Quickly save, search, copy, and share your code snippets with our
+              easy-to-use platform.
+            </h4>
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
     <v-container>
-      <v-row class="my-2">
+      <v-row>
         <v-col cols="12" md="4">
           <v-card>
             <v-card-title>Create Snippet</v-card-title>
@@ -277,6 +284,7 @@ import "prismjs/themes/prism-okaidia.css"; // Dark theme
 export default {
   data() {
     return {
+      isVisible: true,
       sheet: false,
       title: "",
       category: "",
@@ -307,6 +315,10 @@ export default {
     },
   },
   methods: {
+    closeSection() {
+      // Set visibility to false
+      this.isVisible = false;
+    },
     saveSnippet() {
       if (!this.title || !this.category || !this.code) {
         alert("Please fill out all fields!");
@@ -413,5 +425,11 @@ pre {
   border-radius: 8px;
   overflow-x: auto;
   font-family: "Courier New", Courier, monospace;
+}
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
 }
 </style>

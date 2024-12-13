@@ -44,8 +44,12 @@
           >
             <v-icon>mdi-linkedin</v-icon>
           </v-btn>
-          <v-btn icon color="red darken-2">
-            <v-icon>mdi-youtube</v-icon>
+          <v-btn
+            icon
+            color="orange darken-2"
+            :href="'mailto:rohitkrgupta333@gmail.com'"
+          >
+            <v-icon>mdi-email</v-icon>
           </v-btn>
         </v-col>
       </v-row>
@@ -60,8 +64,6 @@
 </template>
 <script>
 export default {
-  data: () => ({
-    icons: ["mdi-facebook", "mdi-twitter", "mdi-linkedin", "mdi-instagram"],
-  }),
+  data: () => ({}),
 };
 </script>
