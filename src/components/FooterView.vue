@@ -27,7 +27,7 @@
           <v-btn
             icon
             color="blue darken-2"
-            href="https://twitter.com"
+            href="https://x.com/KrRohit3337"
             target="_blank"
           >
             <v-icon>mdi-twitter</v-icon>
