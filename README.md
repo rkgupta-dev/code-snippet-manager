@@ -136,10 +136,6 @@ Share snippets externally in developer groups or with teammates.
 
 Integrated support page powered by EmailJS.
 
-### 6. Legal Pages
-
-Privacy Policy and Terms of Service included.
-
 ---
 
 ## 🎨 UI Highlights
