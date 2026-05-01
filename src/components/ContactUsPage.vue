@@ -82,15 +82,16 @@
               ></v-textarea>
 
               <v-btn
-                :disabled="!valid"
+                :disabled="!valid || loading"
+                :loading="loading"
                 large
                 depressed
                 color="primary"
                 class="send-btn mt-5"
                 type="submit"
               >
-                <v-icon left>mdi-send-outline</v-icon>
-                Send Message
+                <v-icon left v-if="!loading">mdi-send-outline</v-icon>
+                {{ loading ? "Sending Message..." : "Send Message" }}
               </v-btn>
             </v-form>
           </v-card>
@@ -105,6 +106,32 @@
         {{ snackbar.message }}
       </v-snackbar>
     </v-container>
+
+    <v-dialog v-model="successDialog" max-width="460" persistent>
+      <v-card class="success-dialog pa-8 text-center">
+        <div class="success-check mx-auto mb-5">
+          <v-icon size="42" color="white">mdi-check</v-icon>
+        </div>
+
+        <h2 class="success-title mb-3">Message Sent Successfully 🎉</h2>
+
+        <p class="success-subtitle mb-6">
+          Thank you for reaching out to QuickSnip. We have received your message
+          and will get back to you within 24 hours.
+        </p>
+
+        <v-btn
+          color="primary"
+          large
+          depressed
+          rounded
+          class="px-10 text-capitalize font-weight-bold"
+          @click="successDialog = false"
+        >
+          Awesome
+        </v-btn>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -115,6 +142,8 @@ export default {
   name: "ContactUsPage",
   data() {
     return {
+      successDialog: false,
+      loading: false,
       valid: false,
       name: "",
       email: "",
@@ -168,6 +197,10 @@ export default {
 
   methods: {
     submitForm() {
+      if (!this.valid) return;
+
+      this.loading = true;
+
       const emailData = {
         from_name: this.name,
         from_email: this.email,
@@ -183,16 +216,21 @@ export default {
         .then((response) => {
           console.log("Email sent successfully:", response);
 
+          this.loading = false;
+          this.successDialog = true;
+
           this.name = "";
           this.email = "";
           this.message = "";
 
-          this.snackbar.message = "Your message has been sent successfully!";
-          this.snackbar.color = "success";
-          this.snackbar.visible = true;
+          setTimeout(() => {
+            this.successDialog = false;
+          }, 4000);
         })
         .catch((error) => {
           console.error("Failed to send email:", error);
+
+          this.loading = false;
 
           this.snackbar.message = "Failed to send message. Please try again.";
           this.snackbar.color = "error";
@@ -337,6 +375,59 @@ export default {
 
 .theme--dark .contact-info-box {
   background: rgba(255, 255, 255, 0.03);
+}
+
+.success-dialog {
+  border-radius: 28px !important;
+  background: linear-gradient(135deg, #ffffff, #f8fbff);
+  box-shadow: 0 25px 60px rgba(15, 23, 42, 0.15);
+}
+
+.success-check {
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10b981, #34d399);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: popScale 0.5s ease;
+  box-shadow: 0 12px 30px rgba(16, 185, 129, 0.3);
+}
+
+.success-title {
+  font-size: 28px;
+  font-weight: 900;
+  color: #111827;
+}
+
+.success-subtitle {
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+@keyframes popScale {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.theme--dark .success-dialog {
+  background: #111827 !important;
+}
+
+.theme--dark .success-title {
+  color: white;
+}
+
+.theme--dark .success-subtitle {
+  color: rgba(255, 255, 255, 0.6);
 }
 
 /* mobile */
