@@ -1,18 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title><%= htmlWebpackPlugin.options.title %></title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
+    <!-- Primary SEO -->
+    <title>
+      QuickSnip — Save, Organize, Copy & Share Code Snippets Instantly
+    </title>
+    <meta
+      name="title"
+      content="QuickSnip — Save, Organize, Copy & Share Code Snippets Instantly"
+    />
+    <meta
+      name="description"
+      content="QuickSnip is a lightweight developer tool to save, manage, search, copy, and share reusable code snippets with syntax highlighting, dark mode, and responsive design."
+    />
+    <meta
+      name="keywords"
+      content="QuickSnip, code snippets manager, save snippets, developer tool, Vue snippet manager, JavaScript snippets, code organizer, snippet vault, reusable code"
+    />
+    <meta name="author" content="Rohit Kr. Gupta" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#6366F1" />
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://quisnip.netlify.app/" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+
+    <!-- Open Graph / Facebook / LinkedIn -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://quisnip.netlify.app/" />
+    <meta
+      property="og:title"
+      content="QuickSnip — Save, Organize, Copy & Share Code Snippets Instantly"
+    />
+    <meta
+      property="og:description"
+      content="A modern Vue.js powered code snippet vault for developers to organize reusable snippets smarter and faster."
+    />
+    <meta
+      property="og:image"
+      content="https://quisnip.netlify.app/preview.png"
+    />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://quisnip.netlify.app/" />
+    <meta
+      property="twitter:title"
+      content="QuickSnip — Save, Organize, Copy & Share Code Snippets Instantly"
+    />
+    <meta
+      property="twitter:description"
+      content="Store, manage, copy, and share your favorite reusable code snippets effortlessly."
+    />
+    <meta
+      property="twitter:image"
+      content="https://quisnip.netlify.app/preview.png"
+    />
+
+    <!-- Fonts -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,800,900"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css"
+    />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "QuickSnip",
+        "url": "https://quisnip.netlify.app/",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Web Browser",
+        "description": "QuickSnip is a modern web application for saving, organizing, copying, and sharing reusable code snippets.",
+        "author": {
+          "@type": "Person",
+          "name": "Rohit Kr. Gupta"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "INR"
+        }
+      }
+    </script>
   </head>
+
   <body>
     <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+      <strong>
+        We're sorry but QuickSnip doesn't work properly without JavaScript
+        enabled. Please enable it to continue.
+      </strong>
     </noscript>
+
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
