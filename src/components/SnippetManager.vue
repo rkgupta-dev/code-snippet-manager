@@ -1,318 +1,292 @@
 <template>
-  <div>
-    <v-container>
-      <!-- Render the section only if isVisible is true -->
-      <v-row v-if="isVisible" class="text-center position-relative">
-        <v-col cols="12">
-          <!-- Close button in the top-right corner -->
-          <v-btn icon color="red" class="close-button" @click="closeSection">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-          <!-- Section content -->
-          <div class="pa-4">
-            <h2 class="headline text-center">
-              Organize and Share Your Code Snippets with Ease
-            </h2>
-            <h4 class="text-center">
-              Quickly save, search, copy, and share your code snippets with our
-              easy-to-use platform.
-            </h4>
-          </div>
-        </v-col>
-      </v-row>
+  <div class="snippet-page">
+    <!-- HERO -->
+    <v-container v-if="isVisible" class="mb-6">
+      <v-card flat class="hero-banner pa-6 pa-md-8">
+        <v-btn icon class="hero-close-btn" @click="closeSection">
+          <v-icon small>mdi-close</v-icon>
+        </v-btn>
+
+        <div class="hero-badge mb-4">SMART CODE ORGANIZER</div>
+
+        <h1 class="hero-title mb-3">
+          Organize, Save & Share <br />
+          Your Snippets Instantly
+        </h1>
+
+        <p class="hero-subtitle mb-0">
+          Build your own searchable code vault. Copy reusable snippets, manage
+          languages, and share snippets across devices in seconds.
+        </p>
+      </v-card>
     </v-container>
+
     <v-container>
       <v-row>
+        <!-- LEFT CREATE PANEL -->
         <v-col cols="12" md="4">
-          <v-card>
-            <v-card-title>Create Snippet</v-card-title>
-            <v-card-text>
-              <v-text-field
-                v-model="title"
-                label="Title"
-                outlined
-                dense
-              ></v-text-field>
-              <v-select
-                v-model="category"
-                :items="languages"
-                label="Category"
-                outlined
-                dense
-              ></v-select>
-              <v-textarea
-                v-model="code"
-                label="Code Snippet"
-                outlined
-                rows="7"
-              ></v-textarea>
-              <div class="d-flex justify-end my-2">
-                <v-btn color="primary" @click="saveSnippet">Save Snippet</v-btn>
+          <v-card flat class="create-panel pa-6">
+            <div class="panel-heading mb-6">
+              <div class="panel-mini-badge">CREATE</div>
+              <h2 class="panel-title">New Snippet</h2>
+              <div class="panel-subtitle">
+                Save reusable code blocks into your personal vault
               </div>
-            </v-card-text>
+            </div>
+
+            <v-text-field
+              v-model="title"
+              label="Snippet Title"
+              outlined
+              dense
+              class="mb-3 custom-input"
+            />
+
+            <v-select
+              v-model="category"
+              :items="languages"
+              label="Select Category"
+              outlined
+              dense
+              class="mb-3 custom-input"
+            />
+
+            <v-textarea
+              v-model="code"
+              label="Paste Your Code"
+              outlined
+              rows="7"
+              class="custom-input code-area"
+            />
+
+            <v-btn
+              block
+              large
+              depressed
+              color="primary"
+              class="save-btn mt-5"
+              @click="saveSnippet"
+            >
+              <v-icon left>mdi-content-save-outline</v-icon>
+              Save Snippet
+            </v-btn>
           </v-card>
         </v-col>
 
+        <!-- RIGHT LIBRARY PANEL -->
         <v-col cols="12" md="8">
-          <v-card>
-            <v-card-title>
-              Snippets
-              <v-spacer></v-spacer>
-              <v-text-field
-                v-model="search"
-                label="Search"
-                append-icon="mdi-magnify"
-                dense
-              ></v-text-field>
-            </v-card-title>
-            <v-card-text>
-              <div class="d-flex">
-                <v-select
-                  v-model="selectedCategory"
-                  :items="['All', ...languages]"
-                  label="Filter by Language"
-                  dense
-                  outlined
-                ></v-select>
-                <v-btn
-                  color="primary"
-                  class="ml-2"
-                  elevation="4"
-                  dark
-                  @click="sheet = !sheet"
-                  >My Snippets</v-btn
-                >
-              </div>
-              <!-- Bottom Sheet for snippets lists -->
-              <div class="text-center">
-                <v-bottom-sheet v-model="sheet" inset>
-                  <v-sheet class="text-center" height="350px">
-                    <v-btn
-                      class="my-4"
-                      text
-                      color="red"
-                      @click="sheet = !sheet"
-                    >
-                      Close
-                      <v-icon right dark> mdi-close </v-icon>
-                    </v-btn>
-                    <div
-                      style="
-                        max-height: 300px;
-                        overflow-y: auto;
-                        display: block;
-                        width: 100%;
-                        height: 100%;
-                      "
-                    >
-                      <v-simple-table class="my-4">
-                        <template v-slot:default>
-                          <tr>
-                            <th>Serial No.</th>
-                            <th>Title</th>
-                            <th>Languages</th>
-                            <th>Actions</th>
-                          </tr>
-                          <tbody>
-                            <!-- Check if there are no snippets -->
-                            <template v-if="filteredSnippets.length === 0">
-                              <tr>
-                                <td colspan="4" class="text-center py-4">
-                                  <v-icon color="red" class="display-3"
-                                    >mdi-alert-circle-outline</v-icon
-                                  ><br />
-                                  <span class="ml-2 text-h6 font-weight-bold"
-                                    >No Snippets Added Yet</span
-                                  >
-                                </td>
-                              </tr>
-                            </template>
+          <v-card flat class="library-panel pa-6">
+            <!-- top search row -->
+            <v-row align="center" class="mb-5">
+              <v-col cols="12" md="4">
+                <div class="panel-mini-badge">LIBRARY</div>
+                <h2 class="panel-title mb-1">My Snippets</h2>
+              </v-col>
 
-                            <!-- Render snippets if available -->
-                            <template v-else>
-                              <tr
-                                v-for="(snippet, index) in filteredSnippets"
-                                :key="snippet.id"
-                                class="md-4"
-                              >
-                                <td>{{ index + 1 }}</td>
-                                <!-- Serial number -->
-                                <td>{{ snippet.title }}</td>
-                                <td>{{ snippet.category }}</td>
-                                <td>
-                                  <!-- Copy Button -->
-                                  <v-btn
-                                    small
-                                    icon
-                                    @click="copyToClipboard(snippet.code)"
-                                  >
-                                    <v-icon>mdi-content-copy</v-icon>
-                                  </v-btn>
+              <v-col cols="12" md="8">
+                <v-row dense>
+                  <v-col cols="12" sm="7">
+                    <v-text-field
+                      v-model="search"
+                      label="Search snippets..."
+                      append-icon="mdi-magnify"
+                      dense
+                      outlined
+                      hide-details
+                      class="custom-input"
+                    />
+                  </v-col>
 
-                                  <!-- Share Button -->
-                                  <v-btn
-                                    small
-                                    color="green"
-                                    outlined
-                                    @click="shareOnWhatsApp(snippet)"
-                                    classs
-                                  >
-                                    <v-icon>mdi-whatsapp</v-icon>
-                                  </v-btn>
-                                  <!-- Delete Button -->
-                                  <!-- <v-btn
-                                    small
-                                    color="red"
-                                    outlined
-                                    @click="deleteSnippet(snippet.id)"
-                                    class="ml-4"
-                                  >
-                                    <v-icon>mdi-delete</v-icon>
-                                  </v-btn> -->
-                                </td>
-                              </tr>
-                            </template>
-                          </tbody>
-                        </template>
-                      </v-simple-table>
-                    </div>
-                  </v-sheet>
-                </v-bottom-sheet>
-              </div>
+                  <v-col cols="12" sm="5">
+                    <v-select
+                      v-model="selectedCategory"
+                      :items="['All', ...languages]"
+                      label="Language"
+                      dense
+                      outlined
+                      hide-details
+                      class="custom-input"
+                    />
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
 
-              <!-- Show message when no snippets match the filter or search -->
-              <div
-                v-if="filteredSnippets.length === 0"
-                align="center"
-                justify="center"
-              >
-                <v-divider></v-divider>
-                <div class="mt-4">
-                  <v-icon color="red" class="display-1"
-                    >mdi-alert-circle-outline</v-icon
-                  >
-                  <span class="ml-2 text-h6 font-weight-bold"
-                    >No Snippets Added Yet</span
-                  >
-                </div>
-              </div>
+            <!-- empty -->
+            <div v-if="filteredSnippets.length === 0" class="empty-state">
+              <v-icon size="70" color="red lighten-1">
+                mdi-folder-alert-outline
+              </v-icon>
+              <h3 class="mt-4">No Snippets Added Yet</h3>
+              <p>Your saved snippets will appear here once created.</p>
+            </div>
 
-              <!-- Display filtered snippets -->
-              <div
+            <!-- snippet list -->
+            <v-row v-else>
+              <v-col
+                cols="12"
                 v-for="snippet in filteredSnippets"
                 :key="snippet.id"
-                class="snippet"
               >
-                <v-card class="my-4" outlined>
+                <v-card outlined class="snippet-inner-card">
                   <v-card-title
                     class="d-flex justify-space-between align-center"
                   >
-                    <span>{{ snippet.title }}</span>
                     <div>
-                      <v-btn
-                        small
-                        color="green"
-                        outlined
-                        @click="shareOnWhatsApp(snippet)"
-                        classs
-                      >
-                        <v-icon>mdi-whatsapp</v-icon>
+                      <div class="snippet-title">{{ snippet.title }}</div>
+                      <div class="snippet-language">{{ snippet.category }}</div>
+                    </div>
+
+                    <div>
+                      <v-btn icon small @click="copyToClipboard(snippet.code)">
+                        <v-icon color="primary">mdi-content-copy</v-icon>
                       </v-btn>
-                      <!-- Delete Snippet Button on the right -->
-                      <v-btn
-                        small
-                        color="red"
-                        outlined
-                        @click="deleteSnippet(snippet.id)"
-                        class="ml-2"
-                      >
-                        <v-icon>mdi-delete</v-icon>
+
+                      <v-btn icon small @click="shareOnWhatsApp(snippet)">
+                        <v-icon color="green">mdi-whatsapp</v-icon>
+                      </v-btn>
+
+                      <v-btn icon small @click="openDeleteDialog(snippet.id)">
+                        <v-icon color="red">mdi-delete-outline</v-icon>
                       </v-btn>
                     </div>
                   </v-card-title>
-                  <v-card-subtitle>{{ snippet.category }}</v-card-subtitle>
-                  <v-btn
-                    class="my-1 ml-4"
-                    small
-                    icon
-                    @click="copyToClipboard(snippet.code)"
-                  >
-                    <v-icon>mdi-content-copy</v-icon>
-                  </v-btn>
-                  <v-card-text class="scrollable-card my-2 prism-code">
-                    <div :class="prismThemeClass">
-                      <pre
-                        class="prism-code"
-                        v-html="highlightedCode(snippet.code)"
-                      ></pre>
-                    </div>
-                  </v-card-text>
+
+                  <div :class="prismThemeClass">
+                    <pre
+                      class="premium-code-box prism-code"
+                      v-html="highlightedCode(snippet.code, snippet.category)"
+                    ></pre>
+                  </div>
                 </v-card>
-              </div>
-            </v-card-text>
+              </v-col>
+            </v-row>
           </v-card>
         </v-col>
       </v-row>
 
-      <!-- Snackbar Notifications -->
+      <!-- snackbars -->
       <v-snackbar v-model="snackbar" :timeout="2000" color="success">
         Snippet copied to clipboard!
       </v-snackbar>
+
       <v-snackbar v-model="saveSnackbar" :timeout="2000" color="success">
         Snippet saved successfully!
       </v-snackbar>
+
+      <v-snackbar v-model="formSnackbar" :timeout="2000" color="error">
+        Please fill out all fields!
+      </v-snackbar>
+
+      <v-snackbar v-model="deleteSnackbar" :timeout="2000" color="success">
+        Snippet deleted successfully!
+      </v-snackbar>
     </v-container>
+
+    <!-- delete dialog -->
+    <v-dialog v-model="deleteDialog" max-width="420">
+      <v-card class="pa-4 delete-dialog-card">
+        <div class="text-center">
+          <v-icon size="60" color="red lighten-1">
+            mdi-delete-alert-outline
+          </v-icon>
+          <h2 class="mt-3 font-weight-bold">Delete Snippet?</h2>
+          <p class="grey--text text--darken-1 mt-2">
+            This snippet will be permanently removed from your library.
+          </p>
+        </div>
+
+        <v-card-actions class="justify-center mt-4">
+          <v-btn text class="dialog-btn" @click="deleteDialog = false">
+            Cancel
+          </v-btn>
+
+          <v-btn color="red" dark class="dialog-btn" @click="confirmDelete">
+            Yes Delete
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import Prism from "prismjs";
-import "prismjs/themes/prism.css"; // Light theme
-import "prismjs/themes/prism-okaidia.css"; // Dark theme
+
+import "prismjs/themes/prism.css";
+import "prismjs/themes/prism-okaidia.css";
+
+import "prismjs/components/prism-javascript";
+import "prismjs/components/prism-css";
+import "prismjs/components/prism-markup";
+import "prismjs/components/prism-python";
+
 export default {
+  name: "SnippetManager",
+
   data() {
     return {
       isVisible: true,
-      sheet: false,
+
       title: "",
       category: "",
       code: "",
+
       search: "",
       selectedCategory: "All",
-      languages: ["JavaScript", "Vue.js", "CSS", "HTML", "Python"],
+
+      languages: [
+        "JavaScript",
+        "Vue.js",
+        "CSS",
+        "HTML",
+        "Python",
+        "UI/UX",
+        "Vuetify",
+        "Other",
+      ],
+
       snippets: [],
-      snackbar: false, // Control the visibility of the snackbar
+
+      snackbar: false,
       saveSnackbar: false,
+      formSnackbar: false,
+      deleteSnackbar: false,
+
+      deleteDialog: false,
+      deleteId: null,
     };
   },
+
   computed: {
     prismThemeClass() {
-      // Determine the theme class based on Vuetify's dark mode
       return this.$vuetify.theme.dark ? "prism-dark" : "prism-light";
     },
+
     filteredSnippets() {
       return this.snippets.filter((snippet) => {
         const matchesSearch = snippet.title
           .toLowerCase()
           .includes(this.search.toLowerCase());
+
         const matchesCategory =
           this.selectedCategory === "All" ||
           snippet.category === this.selectedCategory;
+
         return matchesSearch && matchesCategory;
       });
     },
   },
+
   methods: {
     closeSection() {
-      // Set visibility to false
       this.isVisible = false;
     },
+
     saveSnippet() {
       if (!this.title || !this.category || !this.code) {
-        alert("Please fill out all fields!");
+        this.formSnackbar = true;
         return;
-      } else {
-        this.saveSnackbar = true;
       }
 
       const newSnippet = {
@@ -322,54 +296,80 @@ export default {
         code: this.code,
       };
 
-      this.snippets.push(newSnippet);
+      this.snippets.unshift(newSnippet);
+
+      localStorage.setItem("snippets", JSON.stringify(this.snippets));
+
       this.title = "";
       this.category = "";
       this.code = "";
-      localStorage.setItem("snippets", JSON.stringify(this.snippets));
+
+      this.saveSnackbar = true;
     },
-    highlightedCode(code) {
-      return Prism.highlight(code, Prism.languages.javascript, "javascript");
+
+    highlightedCode(code, category) {
+      const langMap = {
+        JavaScript: "javascript",
+        "Vue.js": "javascript",
+        CSS: "css",
+        HTML: "markup",
+        Python: "python",
+        Vuetify: "javascript",
+        "UI/UX": "css",
+        Other: "javascript",
+      };
+
+      const lang = langMap[category] || "javascript";
+      const grammar = Prism.languages[lang] || Prism.languages.javascript;
+
+      return Prism.highlight(code, grammar, lang);
     },
+
     copyToClipboard(code) {
       if (navigator.clipboard) {
-        // Use Clipboard API for modern browsers
-        navigator.clipboard.writeText(code).then(
-          () => {
-            this.snackbar = true; // Show the snackbar on success
-          },
-          (err) => {
-            console.error("Failed to copy snippet: ", err);
-            this.snackbar = false; // Optionally hide snackbar if there was an error
-          }
-        );
+        navigator.clipboard.writeText(code).then(() => {
+          this.snackbar = true;
+        });
       } else {
-        // Fallback for browsers that do not support Clipboard API
         const textArea = document.createElement("textarea");
         textArea.value = code;
         document.body.appendChild(textArea);
         textArea.select();
         document.execCommand("copy");
         document.body.removeChild(textArea);
-        this.snackbar = true; // Show snackbar for success
+        this.snackbar = true;
       }
     },
-    deleteSnippet(id) {
-      // Remove the snippet with the matching id
-      this.snippets = this.snippets.filter((snippet) => snippet.id !== id);
-      // Update localStorage after deletion
-      localStorage.setItem("snippets", JSON.stringify(this.snippets));
-    },
+
     shareOnWhatsApp(snippet) {
       const encodedMessage = encodeURIComponent(
-        `*Title:* ${snippet.title}\n*Language:* ${snippet.category}\n*Code Snippet:*\n${snippet.code}`
+        `*Title:* ${snippet.title}\n*Language:* ${snippet.category}\n\n${snippet.code}`,
       );
-      const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
-      window.open(whatsappUrl, "_blank");
+
+      window.open(`https://wa.me/?text=${encodedMessage}`, "_blank");
+    },
+
+    openDeleteDialog(id) {
+      this.deleteId = id;
+      this.deleteDialog = true;
+    },
+
+    confirmDelete() {
+      this.snippets = this.snippets.filter(
+        (snippet) => snippet.id !== this.deleteId,
+      );
+
+      localStorage.setItem("snippets", JSON.stringify(this.snippets));
+
+      this.deleteDialog = false;
+      this.deleteId = null;
+      this.deleteSnackbar = true;
     },
   },
+
   mounted() {
     const savedSnippets = JSON.parse(localStorage.getItem("snippets"));
+
     if (savedSnippets) {
       this.snippets = savedSnippets;
     }
@@ -378,45 +378,194 @@ export default {
 </script>
 
 <style scoped>
-.snippet pre {
-  background-color: #f5f5f5;
-  padding: 1rem;
-  border-radius: 5px;
-  overflow-x: auto;
-}
-.scrollable-card {
-  /* Adjust width as needed */
-  height: 300px; /* Adjust height as needed */
-  overflow: auto; /* Enables scrolling for overflowing content */
-}
-pre {
-  white-space: pre-wrap; /* Ensures code wraps within the card */
-  word-wrap: break-word; /* Prevents long lines from breaking layout */
-}
-.ml-2 {
-  margin-left: 8px;
-}
-.prism-light .prism-code {
-  background: #f5f5f5;
-  color: #333;
+.snippet-page {
+  min-height: 100vh;
+  padding: 20px 0 40px;
 }
 
-/* Dark Theme */
-.prism-dark .prism-code {
-  background: #2d2d2d;
-  color: #f8f8f2;
+/* ================= HERO ================= */
+.hero-banner {
+  border-radius: 28px !important;
+  background: radial-gradient(
+      circle at top right,
+      rgba(99, 102, 241, 0.1),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(244, 114, 182, 0.08),
+      transparent 30%
+    ),
+    linear-gradient(135deg, #ffffff, #f8fbff);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.04);
 }
 
-/* Common Styles */
-.prism-code {
-  padding: 16px;
-  border-radius: 8px;
-  overflow-x: auto;
-  font-family: "Courier New", Courier, monospace;
-}
-.close-button {
+.hero-close-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 12px;
+  right: 12px;
+}
+
+.hero-badge,
+.panel-mini-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 7px 14px;
+  border-radius: 30px;
+  background: rgba(99, 102, 241, 0.08);
+  color: #6366f1;
+}
+
+.hero-title {
+  font-size: 42px;
+  line-height: 1.2;
+  font-weight: 900;
+  color: #111827;
+}
+
+.hero-subtitle {
+  max-width: 700px;
+  color: #6b7280;
+  line-height: 1.8;
+  font-size: 15px;
+}
+
+/* ================= PANELS ================= */
+.create-panel,
+.library-panel {
+  border-radius: 26px !important;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 14px 35px rgba(15, 23, 42, 0.04);
+}
+
+.panel-title {
+  font-size: 28px;
+  font-weight: 900;
+  color: #111827;
+}
+
+.panel-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* ================= INPUTS ================= */
+.custom-input ::v-deep .v-input__slot {
+  border-radius: 16px !important;
+  box-shadow: none !important;
+}
+
+.code-area ::v-deep textarea {
+  font-family: "Courier New", monospace;
+  font-size: 13px;
+}
+
+.save-btn,
+.dialog-btn {
+  text-transform: none !important;
+  font-weight: 800;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 25px rgba(99, 102, 241, 0.2);
+}
+
+/* ================= EMPTY ================= */
+.empty-state {
+  padding: 80px 20px;
+  text-align: center;
+  color: #94a3b8;
+}
+
+/* ================= SNIPPET CARD ================= */
+.snippet-inner-card {
+  border-radius: 22px !important;
+  padding: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.03);
+  transition: all 0.3s ease;
+}
+
+.snippet-inner-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 35px rgba(99, 102, 241, 0.08);
+}
+
+.snippet-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.snippet-language {
+  font-size: 12px;
+  font-weight: 700;
+  color: #6366f1;
+  margin-top: 2px;
+}
+
+/* ================= CODE BOX ================= */
+.premium-code-box {
+  margin-top: 14px;
+  max-height: 320px;
+  overflow: auto;
+  border-radius: 16px;
+  font-size: 13px;
+  line-height: 1.6;
+  padding: 18px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.prism-light .premium-code-box {
+  background: #f8fafc;
+  color: #111827;
+}
+
+.prism-dark .premium-code-box {
+  background: #111827;
+  color: #f8fafc;
+}
+
+/* ================= DELETE DIALOG ================= */
+.delete-dialog-card {
+  border-radius: 24px !important;
+}
+
+/* ================= DARK MODE ================= */
+.theme--dark .hero-banner,
+.theme--dark .create-panel,
+.theme--dark .library-panel,
+.theme--dark .snippet-inner-card {
+  background: rgba(17, 24, 39, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.theme--dark .hero-title,
+.theme--dark .panel-title,
+.theme--dark .snippet-title {
+  color: white;
+}
+
+.theme--dark .hero-subtitle,
+.theme--dark .panel-subtitle,
+.theme--dark .empty-state {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 960px) {
+  .hero-title {
+    font-size: 30px;
+  }
+
+  .panel-title {
+    font-size: 24px;
+  }
 }
 </style>
